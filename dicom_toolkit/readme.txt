@@ -1,0 +1,1 @@
+dicom_code_generator.py : pick up dicom dictionary info from dicom stardard word document in openxml format. 
