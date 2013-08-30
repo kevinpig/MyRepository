@@ -1,0 +1,2 @@
+for root, dirs, files in os.walk( <filed "path">, topdown = False ):
+    <endpoint>
