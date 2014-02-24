@@ -29,7 +29,7 @@ namespace uWs.PACS.Model
 
             modelBuilder.Configurations.Add(new PatientMap());
             modelBuilder.Configurations.Add(new StudyMap());
-            modelBuilder.Configurations.Add(new SeriesMap());
+            modelBuilder.Configurations.Add(new SeriesMap()); 
             modelBuilder.Configurations.Add(new InstanceMap());
             modelBuilder.Configurations.Add(new FileMap());
             modelBuilder.Configurations.Add(new DeviceMap());

@@ -12,7 +12,7 @@ namespace uWs.PACS.Model
 
         public int FileSystemFk { get; set; }
 
-        public int FilePath { get; set; }
+        public string FilePath { get; set; }
 
         public string Md5 { get; set; }
 

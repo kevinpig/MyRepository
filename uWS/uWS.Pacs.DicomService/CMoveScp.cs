@@ -6,6 +6,7 @@ using uWS.Common;
 using uWS.Dicom;
 using uWS.Dicom.Network;
 using uWS.Dicom.Network.Scp;
+using uWS.Dicom.Network.Scu;
 using uWs.PACS.Model;
 
 namespace uWS.Pacs.DicomService
@@ -134,20 +135,63 @@ namespace uWS.Pacs.DicomService
             errorComment = string.Empty;
 
             var patientId = message.DataSet[DicomTags.PatientId].GetString(0, string.Empty);
+            int patientPK = ctx.Patients.Where(p => p.PatientId == patientId).Select(p => p.Id).FirstOrDefault();
 
-            var studyList = (from p in ctx.Patients where p.PatientId == patientId select p).ToList();
+            var studyList = (ctx.Studies.Where(s => s.PatientForeignKey == patientPK)).ToList();
+
+            foreach (var study in studyList)
+            {
+                
+            }
 
 
             return false;
         }
 
-        private bool GetSopListForStudy(PacsContext ctx, DicomMessage message, string errorComment)
+        private bool GetSopListForStudy(PacsContext ctx, DicomMessage message, out string errorComment)
         {
             errorComment = string.Empty;
 
-            var studyList = (string[])message.DataSet[DicomTags.StudyInstanceUid].Values;
+            var studyUidList = (string[])message.DataSet[DicomTags.StudyInstanceUid].Values;
+
+            var studyList = (from s in ctx.Studies where studyUidList.Contains(s.StudyUid) select s).ToList();
+
 
             return false;
+        }
+
+        private bool GetSopListForSeries(PacsContext ctx, DicomMessage message, out string errorComment)
+        {
+            errorComment = string.Empty;
+
+            var studyInstanctUid = message.DataSet[DicomTags.StudyInstanceUid].GetString(0, string.Empty);
+            var seriesUidList = (string[]) message.DataSet[DicomTags.SeriesInstanceUid].Values;
+
+            var studyPk = ctx.Studies.Where(s => s.StudyUid == studyInstanctUid).Select(s => s.Id).FirstOrDefault();
+
+            return false;
+        }
+
+        private bool GetSopListForInstance(PacsContext ctx, DicomMessage message, out string errorComment)
+        {
+            errorComment = string.Empty;
+
+            string studyInstanceUid = message.DataSet[DicomTags.StudyInstanceUid].GetString(0, "");
+            string seriesInstanceUid = message.DataSet[DicomTags.SeriesInstanceUid].GetString(0, "");
+            var sopInstanceUidArray = (string[])message.DataSet[DicomTags.SopInstanceUid].Values;
+
+            var sopPkArray =
+                (from s in ctx.Instances where sopInstanceUidArray.Contains(s.SopInstanceUid) select s.Id).ToList();
+
+            var fileList =
+                (from f in ctx.Files where sopPkArray.Contains(f.InstanceFk) select f).ToList();
+
+            foreach (var file in fileList)
+            {
+                _theScu.AddStorageInstance(new StorageInstance(file.FilePath));
+            }
+
+            return true;
         }
 
         #endregion
