@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using uWS.Common.Utilities;
@@ -613,7 +614,7 @@ namespace uWS.Dicom.Iod.Modules
 				                         	{
 				                         		_dicomString = dicomString,
 				                         		Format = format,
-				                         		Modifiers = CollectionUtils.Map<string, int>(modifierTokens, m => int.Parse(m))
+				                         		Modifiers = modifierTokens.Select(int.Parse).ToList()
 				                         	};
 
 				return imageDisplayFormat;

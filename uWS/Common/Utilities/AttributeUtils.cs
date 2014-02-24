@@ -46,9 +46,9 @@ namespace uWS.Common.Utilities
         public static List<TAttribute> GetAttributes<TAttribute>(MemberInfo member, bool inherit, Predicate<TAttribute> filter)
             where TAttribute : Attribute
         {
-            return CollectionUtils.Map<TAttribute, TAttribute, List<TAttribute>>(
-                (member.GetCustomAttributes(typeof(TAttribute), inherit).FirstOrDefault( a => filter(a as TAttribute))),
-                delegate(TAttribute obj) { return obj; });
+            var attrs = member.GetCustomAttributes<TAttribute>(inherit).Where(a => filter(a));
+
+            return attrs.ToList();
         }
 
         /// <summary>
@@ -129,9 +129,6 @@ namespace uWS.Common.Utilities
             where TAttribute : Attribute
         {
             return member.GetCustomAttributes<TAttribute>(inherit).Any(attr => filter(attr));
-            return CollectionUtils.Contains<TAttribute>(
-                member.GetCustomAttributes(typeof(TAttribute), inherit),
-                filter);
         }
 
         /// <summary>

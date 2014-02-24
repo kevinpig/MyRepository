@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using uWS.Common;
 using uWS.Common.Utilities;
@@ -264,14 +265,13 @@ namespace uWS.Dicom.Network.Scu
 							case EventObject.FilmSession:
 								_filmSession.OnCreated(affectedUid);
 								break;
-							case EventObject.FilmBox:
-								{
-									var responseFilmBoxModule = new BasicFilmBoxModuleIod(message.DataSet);
-									_filmSession.OnFilmBoxCreated(affectedUid,
-										CollectionUtils.Map<ReferencedInstanceSequenceIod, DicomUid>(
-											responseFilmBoxModule.ReferencedImageBoxSequenceList,
-											imageBoxModule => new DicomUid(imageBoxModule.ReferencedSopInstanceUid, "Instance UID", UidType.SOPInstance)
-										));
+                            case EventObject.FilmBox:
+                                {
+                                    var responseFilmBoxModule = new BasicFilmBoxModuleIod(message.DataSet);
+                                    _filmSession.OnFilmBoxCreated(affectedUid,
+                                                                  responseFilmBoxModule.ReferencedImageBoxSequenceList.Select(
+                                                                  imageBoxModule => new DicomUid(imageBoxModule.ReferencedSopInstanceUid, 
+                                                                      "Instance UID", UidType.SOPInstance)).ToList());
 								}
 								break;
 						}

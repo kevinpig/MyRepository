@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using uWS.Common.Utilities;
 
 namespace uWS.Dicom.Utilities.Xml
@@ -99,8 +100,7 @@ namespace uWS.Dicom.Utilities.Xml
 
 		public bool IsTagExcluded(uint tag)
 		{
-			return CollectionUtils.Contains(ExcludedTags,
-				delegate(DicomTag dicomTag) { return dicomTag.TagValue == tag; });
+		    return ExcludedTags.Any(dicomTag => dicomTag.TagValue == tag);
 		}
 
 		public bool HasExcludedTags(bool recursive)

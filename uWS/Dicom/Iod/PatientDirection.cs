@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using uWS.Common.Utilities;
 
 namespace uWS.Dicom.Iod
@@ -172,7 +173,8 @@ namespace uWS.Dicom.Iod
 
 			_isValid = components.Length > 0;
 			_code = code ?? string.Empty;
-			_description = string.Join(SR.LabelPatientDirectionSeparator, CollectionUtils.Map<PatientDirection, string>(components, d => d.Description).ToArray());
+		    _description = string.Join(SR.LabelPatientDirectionSeparator,
+		                               components.Select(d => d.Description).ToArray());
 			_componentCount = components.Length;
 
 			// consider orientation type to be NONE if direction is empty or unspecified (and not just empty because of parse error)
@@ -442,7 +444,7 @@ namespace uWS.Dicom.Iod
 			var normalized = code.Replace(RightCode, LeftCode);
 			normalized = normalized.Replace(AnteriorCode, PosteriorCode);
 			normalized = normalized.Replace(FootCode, HeadCode);
-			if ((CollectionUtils.Unique(normalized).Count != code.Length))
+			if ((normalized.Distinct().Count() != code.Length))
 				return new PatientDirection[0];
 
 			return components.ToArray();

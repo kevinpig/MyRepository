@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace uWS.Common.Utilities
 {
@@ -271,7 +272,7 @@ namespace uWS.Common.Utilities
 
         private void ValidateMemberType(string memberName, Type[] allowable, Type actual)
         {
-            if (!CollectionUtils.Contains(allowable, delegate(Type t) { return t.IsAssignableFrom(actual); }))
+            if (!allowable.Any(t => t.IsAssignableFrom(actual)))
                 throw new InvalidOperationException(
                     string.Format("Property/field {0} cannot be of type {1} - must be of type {2}",
                         memberName,

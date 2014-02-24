@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using uWS.Common;
 using uWS.Common.Utilities;
 using uWS.Dicom.Iod.Macros;
@@ -156,7 +157,7 @@ namespace uWS.Dicom.Iod.ContextGroups
 		/// <returns>A matching baseline code item if one is found, an extending code item if the context group is extensible and a match wasn't found, or <code>null</code> otherwise.</returns>
 		public virtual T Lookup(CodeSequenceMacro codeSequence, bool compareCodingSchemeVersion)
 		{
-			T result = CollectionUtils.SelectFirst(this, c => c.Equals(codeSequence, compareCodingSchemeVersion));
+		    T result = this.FirstOrDefault(c => c.Equals(codeSequence, compareCodingSchemeVersion));
 			if (result == null && this.IsExtensible)
 				result = CreateContextGroupItem(codeSequence.CodingSchemeDesignator, codeSequence.CodingSchemeVersion, codeSequence.CodeValue, codeSequence.CodeMeaning);
 			return result;
@@ -176,7 +177,7 @@ namespace uWS.Dicom.Iod.ContextGroups
 		/// <returns>A matching baseline code item if one is found, an extending code item if the context group is extensible and a match wasn't found, or <code>null</code> otherwise.</returns>
 		public virtual T Lookup(string codingSchemeDesignator, string codeValue, string codeMeaning, string codingSchemeVersion, bool compareCodingSchemeVersion)
 		{
-			T result = CollectionUtils.SelectFirst(this, c => c.Equals(codingSchemeDesignator, codeValue, codeMeaning, codingSchemeVersion, compareCodingSchemeVersion));
+			T result = this.FirstOrDefault(c => c.Equals(codingSchemeDesignator, codeValue, codeMeaning, codingSchemeVersion, compareCodingSchemeVersion));
 			if (result == null && this.IsExtensible)
 				result = CreateContextGroupItem(codingSchemeDesignator, codingSchemeVersion, codeValue, codeMeaning);
 			return result;
