@@ -1,24 +1,8 @@
 #region License
 
-// Copyright (c) 2013, ClearCanvas Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.clearcanvas.ca
-//
-// This file is part of the ClearCanvas RIS/PACS open source project.
-//
-// The ClearCanvas RIS/PACS open source project is free software: you can
-// redistribute it and/or modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// The ClearCanvas RIS/PACS open source project is distributed in the hope that it
-// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// the ClearCanvas RIS/PACS open source project.  If not, see
-// <http://www.gnu.org/licenses/>.
+// http://www.****.com
 
 #endregion
 
@@ -138,7 +122,6 @@ namespace uWS.Dicom.Iod.Modules
             }
         }
         
-        
         /// <summary>
         /// Gets or sets the derivation description.
         /// </summary>
@@ -163,7 +146,6 @@ namespace uWS.Dicom.Iod.Modules
         }
 
         //TODO: SourceImageSequence
-
 
         /// <summary>
         /// A sequence which provides reference to a set of non-image SOP Class/Instance pairs significantly related to this Image,
@@ -257,8 +239,6 @@ namespace uWS.Dicom.Iod.Modules
             set { base.DicomAttributeProvider[DicomTags.IrradiationEventUid].SetString(0, value); }
         }
         
-        
-        
         #endregion
 
         #region Public Methods
@@ -288,10 +268,6 @@ namespace uWS.Dicom.Iod.Modules
             //dicomAttributeProvider[DicomTags.MemoryAllocation].SetNullValue();
             //dicomAttributeProvider[DicomTags.OwnerId].SetNullValue();
         }
-
-
-
-
 
         #endregion
     }

@@ -1,24 +1,8 @@
 #region License
 
-// Copyright (c) 2013, ClearCanvas Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.clearcanvas.ca
-//
-// This file is part of the ClearCanvas RIS/PACS open source project.
-//
-// The ClearCanvas RIS/PACS open source project is free software: you can
-// redistribute it and/or modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// The ClearCanvas RIS/PACS open source project is distributed in the hope that it
-// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// the ClearCanvas RIS/PACS open source project.  If not, see
-// <http://www.gnu.org/licenses/>.
+// http://www.****.com
 
 #endregion
 
@@ -82,7 +66,6 @@ namespace uWS.Dicom.Iod.Modules
             set { IodBase.SetAttributeFromEnum(base.DicomAttributeProvider[DicomTags.SmokingStatus], value); }
         }
 
-
         /// <summary>
         /// Gets or sets the additional patient history.
         /// </summary>
@@ -103,7 +86,6 @@ namespace uWS.Dicom.Iod.Modules
             set { IodBase.SetAttributeFromEnum(base.DicomAttributeProvider[DicomTags.PregnancyStatus], value); }
         }
 
-
         /// <summary>
         /// Gets or sets the patients last Menstrual date (if applicable).
         /// </summary>
@@ -119,7 +101,6 @@ namespace uWS.Dicom.Iod.Modules
 
             set { DateTimeParser.SetDateTimeAttributeValues(value, base.DicomAttributeProvider[DicomTags.LastMenstrualDate], base.DicomAttributeProvider[DicomTags.LastMenstrualDate]); }
         }
-
 
         /// <summary>
         /// Gets or sets the Patient's Sex Neutered value.
@@ -150,11 +131,9 @@ namespace uWS.Dicom.Iod.Modules
             get { return base.DicomAttributeProvider[DicomTags.PatientState].GetString(0, String.Empty); }
             set { base.DicomAttributeProvider[DicomTags.PatientState].SetString(0, value); }
         }
-
  
         //TODO: Patient's Pertinent Documents Sequence
         //TODO: Purposes of Code Reference Sequence
-        
 
         /// <summary>
         /// Gets or sets the Document Title.
@@ -264,7 +243,6 @@ namespace uWS.Dicom.Iod.Modules
     }
     #endregion
 
-
     #region PregnancyStatus Enum
     /// <summary>
     /// PregnancyStatus Enumeration
@@ -290,7 +268,6 @@ namespace uWS.Dicom.Iod.Modules
 
     }
     #endregion
-
 
 }
 

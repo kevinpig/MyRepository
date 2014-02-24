@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using uWS.Dicom.Network.Scu;
 using uWs.PACS.Model;
 
@@ -32,10 +40,7 @@ namespace uWS.Pacs.DicomService
 
         #region Public Method 
 
-
-
         #endregion
-
 
     }
 }

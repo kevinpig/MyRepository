@@ -1,24 +1,8 @@
-﻿#region License
+#region License
 
-// Copyright (c) 2013, ClearCanvas Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.clearcanvas.ca
-//
-// This file is part of the ClearCanvas RIS/PACS open source project.
-//
-// The ClearCanvas RIS/PACS open source project is free software: you can
-// redistribute it and/or modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// The ClearCanvas RIS/PACS open source project is distributed in the hope that it
-// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// the ClearCanvas RIS/PACS open source project.  If not, see
-// <http://www.gnu.org/licenses/>.
+// http://www.****.com
 
 #endregion
 
@@ -135,7 +119,6 @@ namespace uWS.Dicom.Iod.Modules
             get { return base.DicomAttributeProvider[DicomTags.ConfidentialityConstraintOnPatientDataDescription].GetString(0, String.Empty); }
             set { base.DicomAttributeProvider[DicomTags.ConfidentialityConstraintOnPatientDataDescription].SetString(0, value); }
         }
-        
 
         /// <summary>
         /// Gets or sets the patients birth date.
@@ -233,7 +216,6 @@ namespace uWS.Dicom.Iod.Modules
             get { return base.DicomAttributeProvider[DicomTags.RegionOfResidence].GetString(0, String.Empty); }
             set { base.DicomAttributeProvider[DicomTags.RegionOfResidence].SetString(0, value); }
         }
-
 
         /// <summary>
         /// Gets or sets the patients telephone number. TODO: Way to specify more than 1...

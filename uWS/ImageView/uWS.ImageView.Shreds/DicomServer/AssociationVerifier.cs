@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using uWS.Dicom.Network;
 
 namespace uWS.ImageView.Shreds.DicomServer

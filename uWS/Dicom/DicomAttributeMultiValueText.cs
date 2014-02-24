@@ -1,24 +1,8 @@
-﻿#region License
+#region License
 
-// Copyright (c) 2013, ClearCanvas Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.clearcanvas.ca
-//
-// This file is part of the ClearCanvas RIS/PACS open source project.
-//
-// The ClearCanvas RIS/PACS open source project is free software: you can
-// redistribute it and/or modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// The ClearCanvas RIS/PACS open source project is distributed in the hope that it
-// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// the ClearCanvas RIS/PACS open source project.  If not, see
-// <http://www.gnu.org/licenses/>.
+// http://www.****.com
 
 #endregion
 
@@ -112,10 +96,7 @@ namespace uWS.Dicom
             }
         }
 
-
-
         #endregion
-
 
         #region Abstract Method Implementation
 
@@ -187,7 +168,6 @@ namespace uWS.Dicom
                 {
                     return 0;
                 }
-                    
 
                 if (ParentCollection!=null && ParentCollection.SpecificCharacterSet != null)
                 {
@@ -276,7 +256,6 @@ namespace uWS.Dicom
             }
         }
 
-
         public override object Values
         {
             get { return _values; }
@@ -314,8 +293,6 @@ namespace uWS.Dicom
 
             return bb;
         }
-
-
 
         /// <summary>
         /// Retrieve a value in the attribute 
@@ -485,7 +462,6 @@ namespace uWS.Dicom
         }
 
         #endregion
-
      
     }
     #endregion
@@ -564,7 +540,6 @@ namespace uWS.Dicom
         {
         }
 
-
         internal DicomAttributeCS(DicomAttributeCS attrib)
             : base(attrib)
         {
@@ -606,8 +581,6 @@ namespace uWS.Dicom
                 && !tag.MultiVR)
                 throw new DicomException(SR.InvalidVR);
         }
-
-
 
         internal DicomAttributeDA(DicomTag tag, ByteBuffer item)
             : base(tag, item)
@@ -711,8 +684,6 @@ namespace uWS.Dicom
             StreamLength = (uint) ToString().Length;
 
         }
-
-        
        
     }
     #endregion
@@ -760,7 +731,6 @@ namespace uWS.Dicom
             get { return _numberStyle; }
             set { _numberStyle = value; }
         }
-
         
         #endregion
 
@@ -781,7 +751,6 @@ namespace uWS.Dicom
         {
             return new DicomAttributeDS(this);
         }
-
 
         /// <summary>
         /// Set an integer as a DS value. Existing value will be overwritten
@@ -944,7 +913,6 @@ namespace uWS.Dicom
             if (_values != null && _values.Length >= 1)
                 Array.Copy(_values, temp, _values.Length);
 
-
             _values = temp;
 
 			// Originallly had R here, but ran into problems with the attribute value being too large
@@ -967,7 +935,6 @@ namespace uWS.Dicom
 			string[] temp = new string[_values.Length + 1];
             if (_values != null && _values.Length >= 1)
                 Array.Copy(_values, temp, _values.Length);
-
 
             _values = temp;
 
@@ -1512,7 +1479,6 @@ namespace uWS.Dicom
         {
             return new DicomAttributeIS(this);
         }
-
         
         /// <summary>
         /// Method to retrieve an Int16 value from an IS attribute.
@@ -1978,7 +1944,6 @@ namespace uWS.Dicom
         {
         }
 
-
         #endregion
 
         public override DicomAttribute Copy()
@@ -2021,7 +1986,6 @@ namespace uWS.Dicom
             : base(tag, item)
         {
         }
-
 
         internal DicomAttributePN(DicomAttributePN attrib)
             : base(attrib)
@@ -2070,7 +2034,6 @@ namespace uWS.Dicom
             : base(tag, item)
         {
         }
-
 
         internal DicomAttributeSH(DicomAttributeSH attrib)
             : base(attrib)
@@ -2130,7 +2093,6 @@ namespace uWS.Dicom
         #region Propperties
         #endregion
 
-
         internal override void ValidateString(string value)
         {
             base.ValidateString(value);
@@ -2148,7 +2110,6 @@ namespace uWS.Dicom
         {
             return new DicomAttributeTM(this);
         }
-
 
         /// <summary>
         /// Method to retrieve a datetime value from a TM attribute.

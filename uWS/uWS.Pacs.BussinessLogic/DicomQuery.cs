@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
@@ -98,7 +106,6 @@ namespace uWS.Pacs.BussinessLogic
             DicomAttributeCollection dataset = response.DataSet;
 
             dataset[DicomTags.RetrieveAeTitle].SetStringValue("");
-
 
         }
     }

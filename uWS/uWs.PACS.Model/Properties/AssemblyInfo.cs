@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -144,7 +152,6 @@ namespace uWS.Pacs.DicomService
                 
             }
 
-
             return false;
         }
 
@@ -156,7 +163,6 @@ namespace uWS.Pacs.DicomService
 
             var studyList = (from s in ctx.Studies where studyUidList.Contains(s.StudyUid) select s).ToList();
 
-
             return false;
         }
 
@@ -167,7 +173,13 @@ namespace uWS.Pacs.DicomService
             var studyInstanctUid = message.DataSet[DicomTags.StudyInstanceUid].GetString(0, string.Empty);
             var seriesUidList = (string[]) message.DataSet[DicomTags.SeriesInstanceUid].Values;
 
-            var studyPk = ctx.Studies.Where(s => s.StudyUid == studyInstanctUid).Select(s => s.Id).FirstOrDefault();
+            int studyPk = ctx.Studies.Where(s => s.StudyUid == studyInstanctUid).Select(s => s.Id).FirstOrDefault();
+
+            var seriesPkList = (from s in ctx.Series where seriesUidList.Contains(s.SeriesUid) select s.Id).ToList();
+
+            var sopList = (from s in ctx.Instances where seriesPkList.Contains(s.Id) select s.Id).ToList();
+
+            var fileList = (from f in ctx)
 
             return false;
         }

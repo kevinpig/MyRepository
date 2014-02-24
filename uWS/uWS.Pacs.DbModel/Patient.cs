@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace uWs.PACS.Model
 {
-    
 
     public partial class Patient
     {

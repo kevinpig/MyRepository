@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using System;
 using uWS.Dicom;
 using uWS.Dicom.Iod.Iods;
@@ -172,11 +180,8 @@ namespace uWS.Pacs.BussinessLogic
                 dbInstance.LastUpdateTime = DateTime.Now;
             }
         }
-
         
         #endregion
-
-       
         
     }
 }

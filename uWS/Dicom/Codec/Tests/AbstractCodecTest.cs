@@ -1,24 +1,8 @@
 #region License
 
-// Copyright (c) 2013, ClearCanvas Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.clearcanvas.ca
-//
-// This file is part of the ClearCanvas RIS/PACS open source project.
-//
-// The ClearCanvas RIS/PACS open source project is free software: you can
-// redistribute it and/or modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// The ClearCanvas RIS/PACS open source project is distributed in the hope that it
-// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// the ClearCanvas RIS/PACS open source project.  If not, see
-// <http://www.gnu.org/licenses/>.
+// http://www.****.com
 
 #endregion
 
@@ -368,7 +352,6 @@ namespace ClearCanvas.Dicom.Codec.Tests
                                            ? Convert8BitSigned(pixel2, pixels, (DicomUncompressedPixelData)pixels2)
                                            : Convert8BitUnsigned(pixel2, pixels, (DicomUncompressedPixelData)pixels2);
 
-
                     for (int i = 0; i < pixels; i++)
                         if (intPixels1[i] != intPixels2[i])
                         {
@@ -411,7 +394,6 @@ namespace ClearCanvas.Dicom.Codec.Tests
                         }
                     }
 
-
                     int[] intPixels1 = pixels1.IsSigned
                                            ? Convert16BitSigned(pixel1, pixels, (DicomUncompressedPixelData)pixels1)
                                            : Convert16BitUnsigned(pixel1, pixels, (DicomUncompressedPixelData)pixels1);
@@ -420,7 +402,6 @@ namespace ClearCanvas.Dicom.Codec.Tests
                                            ? Convert16BitSigned(pixel2, pixels, (DicomUncompressedPixelData)pixels2)
                                            : Convert16BitUnsigned(pixel2, pixels, (DicomUncompressedPixelData)pixels2);
 
-
                     for (int i = 0; i < pixels; i++)
                         if (intPixels1[i] != intPixels2[i])
                         {
@@ -428,7 +409,6 @@ namespace ClearCanvas.Dicom.Codec.Tests
                             totalVariation += Math.Abs(intPixels1[i] - intPixels2[i]);
                         }
                 }
-
 
                 if (pixelsVarying > 0)
                 {

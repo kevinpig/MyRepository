@@ -1,24 +1,8 @@
 #region License
 
-// Copyright (c) 2013, ClearCanvas Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.clearcanvas.ca
-//
-// This file is part of the ClearCanvas RIS/PACS open source project.
-//
-// The ClearCanvas RIS/PACS open source project is free software: you can
-// redistribute it and/or modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// The ClearCanvas RIS/PACS open source project is distributed in the hope that it
-// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// the ClearCanvas RIS/PACS open source project.  If not, see
-// <http://www.gnu.org/licenses/>.
+// http://www.****.com
 
 #endregion
 
@@ -122,7 +106,6 @@ namespace uWS.Dicom.Network
             IsNewDimse = true;
         }
     }
-
 
     /// <summary>
     /// Class used for DICOM network communications.
@@ -386,7 +369,6 @@ namespace uWS.Dicom.Network
             throw new Exception("The method or operation is not implemented.");
         }
 
-
         protected virtual void OnReceiveDimseBegin(byte pcid, DicomAttributeCollection command,
                                                    DicomAttributeCollection dataset)
         {
@@ -601,7 +583,6 @@ namespace uWS.Dicom.Network
         /// <param name="data"/>
         public delegate void NetworkErrorEventHandler(object data);
 
-
         /// <summary>
         /// Occurs when an association has been established between the called AE and calling AE.
         /// </summary>
@@ -761,7 +742,6 @@ namespace uWS.Dicom.Network
                 EnqueuePdu(pdu.Write());
                 State = DicomAssociationState.Sta13_AwaitingTransportConnectionClose;
 
-
                 if (AssociationAborted != null)
                     AssociationAborted(_assoc, reason);
             }
@@ -795,7 +775,6 @@ namespace uWS.Dicom.Network
             EnqueuePdu(pdu.Write());
 
             State = DicomAssociationState.Sta6_AssociationEstablished;
-
 
             if (AssociationEstablished != null)
                 AssociationEstablished(_assoc);
@@ -986,7 +965,6 @@ namespace uWS.Dicom.Network
 
             message.AffectedSopInstanceUid = sopInstanceUid;
 
-
             if (!string.IsNullOrEmpty(moveAE))
             {
                 message.MoveOriginatorApplicationEntityTitle = moveAE;
@@ -1115,7 +1093,6 @@ namespace uWS.Dicom.Network
 
             SendDimse(presentationId, message.CommandSet, message.DataSet);
         }
-
 
         /// <summary>
         /// Method to send a DICOM C-MOVE-RQ message.
@@ -1271,7 +1248,6 @@ namespace uWS.Dicom.Network
 			message.CommandSet[DicomTags.RequestedSopClassUid].SetStringValue(affectedClass.UID);
 			message.CommandSet[DicomTags.RequestedSopInstanceUid].SetStringValue(requestedSopInstanceUid.UID);
 
-
 			SendDimse(presentationID, message.CommandSet, message.DataSet);
 		}
 
@@ -1325,7 +1301,6 @@ namespace uWS.Dicom.Network
 		{
 			SendNCreateNSetNDeleteHelper(DicomCommandField.NCreateResponse, presentationID, messageID, message, status);
 		}
-
 
 		/// <summary>
 		/// Sends an N-Set request.
@@ -1505,7 +1480,6 @@ namespace uWS.Dicom.Network
             }
         }
 
-
         /// <summary>
         /// Main processing routine for processing a network connection.
         /// </summary>
@@ -1637,7 +1611,6 @@ namespace uWS.Dicom.Network
 
                             if (AssociationReleased != null)
                                 AssociationReleased(_assoc);
-
 
                             OnReceiveReleaseResponse();
 
@@ -1926,7 +1899,6 @@ namespace uWS.Dicom.Network
                     LogSendReceive(false, command, dataset);
 
                     OnSendDimseBegin(pcid, command, dataset);
-
 
                     var dsw = new DicomStreamWriter(pdustream);
                     dsw.Write(TransferSyntax.ImplicitVrLittleEndian,

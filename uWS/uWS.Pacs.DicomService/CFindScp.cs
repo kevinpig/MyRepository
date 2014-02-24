@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -393,7 +401,6 @@ namespace uWS.Pacs.DicomService
             else
                 return null;
         }
-
 
         private void OnReceivePatientQuery(DicomServer server, byte presentationId, DicomMessage message)
         {

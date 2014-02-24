@@ -1,3 +1,11 @@
+#region License
+
+// Copyright (c) 2011 - 2014, **** Inc.
+// All rights reserved.
+// http://www.****.com
+
+#endregion
+
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
@@ -552,7 +560,6 @@ namespace uWS.Common
                 throw new ArgumentException(SR.ExceptionArgumentNotPositive, variableName);
         }
 
-
         /// <summary>
         /// Checks if a value is true.
         /// </summary>
@@ -567,7 +574,6 @@ namespace uWS.Common
             if (testTrueCondition != true)
                 throw new ArgumentException(String.Format(SR.ExceptionConditionIsNotMet, conditionName));
         }
-
 
         /// <summary>
         /// Checks if a value is false.

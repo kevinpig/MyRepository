@@ -1,24 +1,8 @@
 #region License
 
-// Copyright (c) 2013, ClearCanvas Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.clearcanvas.ca
-//
-// This file is part of the ClearCanvas RIS/PACS open source project.
-//
-// The ClearCanvas RIS/PACS open source project is free software: you can
-// redistribute it and/or modify it under the terms of the GNU General Public
-// License as published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// The ClearCanvas RIS/PACS open source project is distributed in the hope that it
-// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// the ClearCanvas RIS/PACS open source project.  If not, see
-// <http://www.gnu.org/licenses/>.
+// http://www.****.com
 
 #endregion
 
@@ -107,8 +91,6 @@ namespace uWS.Dicom.Iod.Sequences
             set { IodBase.SetAttributeFromEnum(base.DicomAttributeProvider[DicomTags.ScheduledProcedureStepStatus], value, false); }
         }
 
-
-
         public string CommentsOnTheScheduledProcedureStep
         {
             get { return base.DicomAttributeProvider[DicomTags.CommentsOnTheScheduledProcedureStep].GetString(0, String.Empty); }
@@ -150,7 +132,6 @@ namespace uWS.Dicom.Iod.Sequences
         #endregion
 
         #region Public Static Methods
-
 
         /// <summary>
         /// Sets the common tags for a typical Modality Worklist Request.

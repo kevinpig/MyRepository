@@ -1,9 +1,8 @@
-﻿#region License
+#region License
 
-// 
-// Copyright (c) 2011 - 2012, United-Imaging Inc.
+// Copyright (c) 2011 - 2014, **** Inc.
 // All rights reserved.
-// http://www.united-imaging.com
+// http://www.****.com
 
 #endregion
 
