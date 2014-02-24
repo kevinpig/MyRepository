@@ -373,6 +373,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DicomSettings.settings" />
+    <EmbeddedResource Include="DicomTagDictionary.data" />
     <None Include="Network\NetworkSettings.settings" />
   </ItemGroup>
   <ItemGroup>

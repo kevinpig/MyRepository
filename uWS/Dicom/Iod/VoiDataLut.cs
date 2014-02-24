@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using uWS.Common.Utilities;
 
 namespace uWS.Dicom.Iod
@@ -158,7 +159,7 @@ namespace uWS.Dicom.Iod
 
 		private static List<VoiDataLut> Convert(IEnumerable<DataLut> dataLuts)
 		{
-			return CollectionUtils.Map<DataLut, VoiDataLut>(dataLuts, delegate(DataLut dataLut) { return new VoiDataLut(dataLut); });
+            return dataLuts.Select(dataLut => new VoiDataLut(dataLut)).ToList();
 		}
 
 		#endregion

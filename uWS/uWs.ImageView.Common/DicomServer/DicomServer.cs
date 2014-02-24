@@ -2,11 +2,11 @@
 {
     public class DicomServer : IDicomServer
     {
-        public static string AETitle { get; }
+        public static string AETitle { get; set; }
 
-        public static string Hostname { get; }
+        public static string Hostname { get; set; }
 
-        public static int Port { get; }
+        public static int Port { get; set; }
 
     }
 }

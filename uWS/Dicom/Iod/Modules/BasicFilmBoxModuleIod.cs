@@ -680,7 +680,7 @@ namespace uWS.Dicom.Iod.Modules
 						return this.Modifiers[0]*this.Modifiers[1];
 					case FormatEnum.ROW:
 					case FormatEnum.COL:
-						return CollectionUtils.Reduce<int, int>(this.Modifiers, 0, (m, sum) => sum + m);
+				        return this.Modifiers.Aggregate(0, (current, modifier) => current + modifier);
 
 					case FormatEnum.SLIDE:
 					case FormatEnum.SUPERSLIDE:

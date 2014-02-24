@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using log4net;
 
-[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4netConfig.xml", Watch = true)]
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Logging.config", Watch = true)]
 
 namespace uWS.Common
 {

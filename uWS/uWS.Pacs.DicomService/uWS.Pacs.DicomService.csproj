@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6757B6BD-D5BD-4AA6-9ABA-C9645BB96E46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>uWS.Pacs.DicomService</RootNamespace>
+    <AssemblyName>uWS.Pacs.DicomService</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dicom\packages\EntityFramework.6.1.0-alpha1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dicom\packages\EntityFramework.6.1.0-alpha1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssociationVerifier.cs" />
+    <Compile Include="BaseScp.cs" />
+    <Compile Include="CEchoScp.cs" />
+    <Compile Include="CFindScp.cs" />
+    <Compile Include="CMoveScp.cs" />
+    <Compile Include="DeviceManager.cs" />
+    <Compile Include="DicomScpContext.cs" />
+    <Compile Include="DicomServiceManager.cs" />
+    <Compile Include="DicomSetting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>DicomSetting.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ImageServerDicomService.cs" />
+    <Compile Include="PacsStorageScu.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerPartitionMonitor.cs" />
+    <Compile Include="StoreScpExtension.cs" />
+    <Compile Include="ThreadedService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{8fb88c91-e5d3-4be4-aed7-e849b03c29b1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\uWS.Pacs.BussinessLogic\uWS.Pacs.BussinessLogic.csproj">
+      <Project>{35638ddf-5169-4fdf-b00b-0f9c9819a464}</Project>
+      <Name>uWS.Pacs.BussinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\uWS.Pacs.Common\uWS.Pacs.Common.csproj">
+      <Project>{f66e929b-ac0b-46ea-9334-5e4983f5e0ad}</Project>
+      <Name>uWS.Pacs.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\uWS.Pacs.DbModel\uWS.Pacs.DbModel.csproj">
+      <Project>{8bc1e668-7021-447a-9a16-0c79119334f0}</Project>
+      <Name>uWS.Pacs.DbModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dicom\Dicom.csproj">
+      <Project>{f9be76d3-707a-4b26-b280-040c1a04ebaf}</Project>
+      <Name>Dicom</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DicomSetting.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>DicomSetting.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

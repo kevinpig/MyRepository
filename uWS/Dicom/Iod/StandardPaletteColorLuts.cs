@@ -101,18 +101,18 @@ namespace uWS.Dicom.Iod
 				var resourceResolver = new ResourceResolver(Assembly.GetExecutingAssembly());
 				using (var xmlStream = resourceResolver.OpenResource(resourceName))
 				{
-					var xmlDocument = new XmlDocument();
-					xmlDocument.Load(xmlStream);
-					var docRootNode = CollectionUtils.FirstElement(xmlDocument.GetElementsByTagName("ClearCanvasColorPaletteDefinition")) as XmlElement;
-					if (docRootNode != null)
-					{
-						var instanceNode = CollectionUtils.FirstElement(docRootNode.GetElementsByTagName("Instance")) as XmlElement;
-						if (instanceNode != null)
-						{
-							var instanceXml = new InstanceXml(instanceNode, null);
-							return Create(instanceXml.Collection);
-						}
-					}
+                    //var xmlDocument = new XmlDocument();
+                    //xmlDocument.Load(xmlStream);
+                    //var docRootNode = CollectionUtils.FirstElement(xmlDocument.GetElementsByTagName("ClearCanvasColorPaletteDefinition")) as XmlElement;
+                    //if (docRootNode != null)
+                    //{
+                    //    var instanceNode = CollectionUtils.FirstElement(docRootNode.GetElementsByTagName("Instance")) as XmlElement;
+                    //    if (instanceNode != null)
+                    //    {
+                    //        var instanceXml = new InstanceXml(instanceNode, null);
+                    //        return Create(instanceXml.Collection);
+                    //    }
+                    //}
 				}
 			}
 			catch (Exception ex)
