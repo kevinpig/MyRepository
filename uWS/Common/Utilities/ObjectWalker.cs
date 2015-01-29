@@ -147,7 +147,7 @@ namespace uWS.Common.Utilities
 		/// <param name="memberFilter"></param>
         public ObjectWalker(Predicate<MemberInfo> memberFilter)
         {
-			// includ public fields and properties by default
+			// include public fields and properties by default
 			_includePublicFields = true;
 			_includePublicProperties = true;
 			_memberFilter = memberFilter;

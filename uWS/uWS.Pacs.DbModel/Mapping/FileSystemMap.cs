@@ -19,9 +19,11 @@ namespace uWs.PACS.Model.Mapping
              ToTable("FileSystem");
 
              // Relationship 
-             this.HasOptional(t => t.NextFileSystem)
-                 .WithMany(t => t.PriviouseFileSystems)
-                 .HasForeignKey(t => t.NextFileSytemFK);
+             //this.HasOptional(t => t.NextFileSystem)
+             //                .WithMany(t => t.PriviouseFileSystems)
+             //                .HasForeignKey(t => t.NextFileSytemFK);
+
+            
          }
     }
 }

@@ -234,7 +234,7 @@ namespace uWS.Dicom
 
                     _baseUid = sb.ToString();
 
-                    _lastTimestamp = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    _lastTimestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
                 }
 
                 StringBuilder uid = new StringBuilder();

@@ -18,8 +18,10 @@ namespace uWs.Pacs.Executable
         {
             Platform.StartApp(args);
 
-            DicomServiceManager.Instance.StartService();
+            HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
 
+            DicomServiceManager.Instance.StartService();
+            
             Console.WriteLine(@"press any key to exit!");
             Console.Read();
         }

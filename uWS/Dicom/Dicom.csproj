@@ -29,12 +29,15 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,7 +70,12 @@
     <Compile Include="DicomMessageBase.cs" />
     <Compile Include="DicomPixelData.cs" />
     <Compile Include="DicomSequenceItem.cs" />
-    <Compile Include="DicomSettings.Designer.cs" />
+    <Compile Include="DicomSettings.cs" />
+    <Compile Include="DicomSettings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>DicomSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="DicomTag.cs" />
     <Compile Include="DicomTagDictionary.cs" />
     <Compile Include="DicomTags.cs" />
@@ -310,6 +318,23 @@
     </Compile>
     <Compile Include="Network\SupportedSop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceModel\ApplicationEntity.cs" />
+    <Compile Include="ServiceModel\FaultContracts.cs" />
+    <Compile Include="ServiceModel\Query\Comparers.cs" />
+    <Compile Include="ServiceModel\Query\DicomStudyRootQuery.cs" />
+    <Compile Include="ServiceModel\Query\FaultContracts.cs" />
+    <Compile Include="ServiceModel\Query\Identifier.cs" />
+    <Compile Include="ServiceModel\Query\ImageIdentifier.cs" />
+    <Compile Include="ServiceModel\Query\IPatientRootQuery.cs" />
+    <Compile Include="ServiceModel\Query\IStudyRootQuery.cs" />
+    <Compile Include="ServiceModel\Query\IStudyRootQueryBridge.cs" />
+    <Compile Include="ServiceModel\Query\PatientRootPatientIdentifier.cs" />
+    <Compile Include="ServiceModel\Query\PatientRootStudyIdentifier.cs" />
+    <Compile Include="ServiceModel\Query\SeriesIdentifier.cs" />
+    <Compile Include="ServiceModel\Query\StudyIdentifier.cs" />
+    <Compile Include="ServiceModel\Query\StudyRootQueryBridge.cs" />
+    <Compile Include="ServiceModel\Query\StudyRootQueryServiceClient.cs" />
+    <Compile Include="ServiceModel\Query\StudyRootStudyIdentifier.cs" />
     <Compile Include="SopClass.cs" />
     <Compile Include="SpecificCharacterSetParser.cs" />
     <Compile Include="SR.Designer.cs">
@@ -329,6 +354,8 @@
     <Compile Include="Utilities\DicomStringHelper.cs" />
     <Compile Include="Utilities\DicomTagPath.cs" />
     <Compile Include="Utilities\SopInstanceFactory.cs" />
+    <Compile Include="Utilities\Statistics\AssociationStatisticsRecorder.cs" />
+    <Compile Include="Utilities\Statistics\TransmissionStatistics.cs" />
     <Compile Include="Utilities\StudyBuilder\DicomConverter.cs" />
     <Compile Include="Utilities\StudyBuilder\IUidCollection.cs" />
     <Compile Include="Utilities\StudyBuilder\PatientNode.cs" />
@@ -372,8 +399,12 @@
     <Content Include="Iod\Resources\PETStandardColorPalette.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DicomSettings.settings" />
+    <None Include="DicomSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>DicomSettings1.Designer.cs</LastGenOutput>
+    </None>
     <EmbeddedResource Include="DicomTagDictionary.data" />
+    <None Include="DicomTags.tt" />
     <None Include="Network\NetworkSettings.settings" />
   </ItemGroup>
   <ItemGroup>

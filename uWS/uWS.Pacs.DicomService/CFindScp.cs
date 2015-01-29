@@ -6,7 +6,7 @@
 
 #endregion
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data.Entity.Core.Objects;
@@ -76,7 +76,7 @@ namespace uWS.Pacs.DicomService
                 dataset[DicomTags.SpecificCharacterSet].SetStringValue(characterSet);
                 dataset.SpecificCharacterSet = characterSet;
             }
-            
+
             var relatedStudies = row.Studies;
             Study study = null;
             if (relatedStudies.Count > 0)
@@ -162,7 +162,7 @@ namespace uWS.Pacs.DicomService
                 dataSet[DicomTags.SpecificCharacterSet].SetStringValue(characterSet);
                 dataSet.SpecificCharacterSet = characterSet;
             }
-            
+
             foreach (DicomTag tag in tagList)
             {
                 try
@@ -323,7 +323,7 @@ namespace uWS.Pacs.DicomService
         private void PopuldateInstance(DicomMessageBase request, DicomMessage response, IEnumerable<DicomTag> tagList,
             Instance row)
         {
-            DicomAttributeCollection dataSet = response.DataSet;        
+            DicomAttributeCollection dataSet = response.DataSet;
 
             dataSet[DicomTags.RetrieveAeTitle].SetStringValue(base.Partition.AeTitle);
             dataSet[DicomTags.InstanceAvailability].SetStringValue("ONLINE");
@@ -389,7 +389,7 @@ namespace uWS.Pacs.DicomService
         }
 
         /// <summary>
-        /// Get the prefered character set for the C-FIND-RSP.
+        /// Get the preferred character set for the C-FIND-RSP.
         /// </summary>
         /// <returns></returns>
         private static string GetPreferredCharacterSet()
@@ -524,15 +524,27 @@ namespace uWS.Pacs.DicomService
                         switch (attrib.Tag.TagValue)
                         {
                             case DicomTags.StudyInstanceUid:
+                                {
+                                    var cond = QueryHelper.SetStringArrayCondition("StudyInstanceUid",
+                                                                                   (string[])data[DicomTags.StudyInstanceUid].Values);
+                                    if (!string.IsNullOrEmpty(cond))
+                                    {
+                                        query = query.Where(cond);
+                                    }    
+                                }
+                                
                                 break;
                             case DicomTags.PatientsName:
                                 {
-                                    var cond =
-                                        QueryHelper.SetStringCondition("PatientName",
-                                                                       data[DicomTags.PatientsName].GetString(0,
-                                                                                                              string
-                                                                                                                  .Empty));
-                                    query = query.Where(cond);
+                                    var cond = QueryHelper.SetStringCondition("PatientName",
+                                                                              data[DicomTags.PatientsName].GetString(0,
+                                                                                                                     string
+                                                                                                                         .Empty));
+                                    if (!string.IsNullOrEmpty(cond))
+                                    {
+                                        query = query.Where(cond);
+                                    }
+                                    
                                     break;
                                 }
                             case DicomTags.PatientId:
@@ -549,9 +561,9 @@ namespace uWS.Pacs.DicomService
                                                                              data[DicomTags.PatientsBirthDate].GetString
                                                                                  (0, string.Empty));
                                     query = query.Where(cond);
-                                    break;    
+                                    break;
                                 }
-                                
+
                             case DicomTags.PatientsSex:
                                 {
                                     var cond = QueryHelper.SetStringCondition("PatientSex",
@@ -590,9 +602,7 @@ namespace uWS.Pacs.DicomService
                             case DicomTags.StudyId:
                                 {
                                     var cond = QueryHelper.SetStringCondition("StudyId",
-                                                                              data[DicomTags.StudyId].GetString(0,
-                                                                                                                string
-                                                                                                                    .Empty));
+                                        data[DicomTags.StudyId].GetString(0, string.Empty));
 
                                     query = query.Where(cond);
                                 }
@@ -600,8 +610,7 @@ namespace uWS.Pacs.DicomService
                             case DicomTags.StudyDescription:
                                 {
                                     var cond = QueryHelper.SetStringCondition("StudyDescription",
-                                                                              data[DicomTags.StudyDescription].GetString
-                                                                                  (0, string.Empty));
+                                        data[DicomTags.StudyDescription].GetString(0, string.Empty));
                                     query = query.Where(cond);
                                 }
                                 break;
@@ -658,6 +667,8 @@ namespace uWS.Pacs.DicomService
                         server.SendCFindResponse(presentationId, message.MessageId, errorResponse,
                                                  DicomStatuses.Cancel);
                     }
+
+                    return;
                 }
             }
 
@@ -671,7 +682,7 @@ namespace uWS.Pacs.DicomService
 
             using (var pacsContext = new PacsContext())
             {
-                var adapter = (IObjectContextAdapter) pacsContext;
+                var adapter = (IObjectContextAdapter)pacsContext;
                 var query = new ObjectQuery<Series>("Series", adapter.ObjectContext);
 
                 DicomAttributeCollection data = message.DataSet;
@@ -686,8 +697,8 @@ namespace uWS.Pacs.DicomService
                                 {
                                     var uids = data[DicomTags.StudyInstanceUid].GetString(0, string.Empty);
                                     IQueryable<int> studyQuery = from s in pacsContext.Studies
-                                                     where uids.Contains(s.StudyUid)
-                                                     select s.Id;
+                                                                 where uids.Contains(s.StudyUid)
+                                                                 select s.Id;
                                     var result = studyQuery.ToArray();
                                     if (result.Length == 0)
                                     {
@@ -815,7 +826,7 @@ namespace uWS.Pacs.DicomService
 
             using (var pacsContext = new PacsContext())
             {
-                var adapter = (IObjectContextAdapter) pacsContext;
+                var adapter = (IObjectContextAdapter)pacsContext;
                 var query = new ObjectQuery<Instance>("Instances", adapter.ObjectContext);
 
                 DicomAttributeCollection data = message.DataSet;
@@ -833,7 +844,7 @@ namespace uWS.Pacs.DicomService
                     {
                         switch (attrib.Tag.TagValue)
                         {
-                           
+
                         }
                     }
                 }
@@ -936,34 +947,37 @@ namespace uWS.Pacs.DicomService
                             }
                         });
                         return true;
+
                     case "SERIES":
                         ThreadPool.QueueUserWorkItem(delegate
-                                                    {
-                                                        try
-                                                        {
-                                                            OnReceiveSeriesLevelQuery(server, presentationId, message);
-                                                        }
-                                                        catch (Exception x)
-                                                        {
-                                                            Platform.Log(LogLevel.Error, x,
-                                                                         "Unexpected exception in OnReceiveSeriesLevelQuery.");
-                                                        }
-                                                    });
+                        {
+                            try
+                            {
+                                OnReceiveSeriesLevelQuery(server, presentationId, message);
+                            }
+                            catch (Exception x)
+                            {
+                                Platform.Log(LogLevel.Error, x,
+                                             "Unexpected exception in OnReceiveSeriesLevelQuery.");
+                            }
+                        });
                         return true;
+
                     case "IMAGE":
                         ThreadPool.QueueUserWorkItem(delegate
-                                                         {
-                                                             try
-                                                             {
-                                                                 OnReceiveImageLevelQuery(server, presentationId, message);
-                                                             }
-                                                             catch (Exception x)
-                                                             {
-                                                                 Platform.Log(LogLevel.Error, x,
-                                                                              "Unexpected exception in OnReceiveImageLevelQuery.");
-                                                             }
-                                                         });
+                        {
+                            try
+                            {
+                                OnReceiveImageLevelQuery(server, presentationId, message);
+                            }
+                            catch (Exception x)
+                            {
+                                Platform.Log(LogLevel.Error, x,
+                                             "Unexpected exception in OnReceiveImageLevelQuery.");
+                            }
+                        });
                         return true;
+
                     default:
                         {
                             Platform.Log(LogLevel.Error, "Unexpected Study Root Query/Retrieve level: {0}", level);

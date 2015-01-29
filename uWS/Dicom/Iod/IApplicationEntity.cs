@@ -11,8 +11,8 @@ namespace uWS.Dicom.Iod
 	public interface IApplicationEntity
 	{
         string Name { get; }
-        string AETitle { get; }
-		string Description { get; }
+        string AETitle { get; set; }
+	    string Description { get; }
 		string Location { get; }
 
 	    // TODO (CR Mar 2012): Unsure about this

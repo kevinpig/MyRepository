@@ -67,8 +67,9 @@ namespace uWS.Pacs.DicomService
         {
             try
             {
-                IDicomImport import = new DicomImport();
-                import.Insert(message);
+                var import = new SopInstanceImporter(new SopInstanceImporterContext(
+                                                         "", association.CallingAE, Partition));
+                import.Import(message);
 
                 server.SendCStoreResponse(presentationID, message.MessageId,
                     message.AffectedSopInstanceUid, DicomStatuses.Success);

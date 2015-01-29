@@ -20,6 +20,8 @@ namespace uWs.PACS.Model
 
         public int Id { get; set; }
 
+        public int FileSystemFk { get; set; }
+
         public string AeTitle { get; set; }
 
         public bool Enable { get; set; }
@@ -44,6 +46,8 @@ namespace uWs.PACS.Model
 
         public bool AutoInsertDevice { get; set; }
 
-        public virtual ICollection<Device> Devices { get; set; } 
+        public virtual ICollection<Device> Devices { get; set; }
+
+        public virtual FileSystem FileSystem { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using uWS.Common;
 using uWS.Dicom.Network.Scu;
+using uWS.Dicom.Utilities.Statistics;
 
 namespace uWS.Dicom.Network.Scp
 {
@@ -25,6 +26,7 @@ namespace uWS.Dicom.Network.Scp
         private readonly DicomScp<TContext>.AssociationVerifyCallback _verifier;
     	private readonly DicomScp<TContext>.AssociationComplete _complete;
     	private readonly List<StorageInstance> _instances = new List<StorageInstance>();
+        private AssociationStatisticsRecorder _statsRecorder;
         private bool _cleanedUp = false;
         #endregion
 
@@ -90,6 +92,8 @@ namespace uWS.Dicom.Network.Scp
                     }
                 }
             }
+
+            _statsRecorder = new AssociationStatisticsRecorder(server); 
 
         }
         #endregion

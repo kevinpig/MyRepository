@@ -30,8 +30,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dicom\packages\IronPython.2.7.4\lib\Net45\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dicom\packages\IronPython.2.7.4\lib\Net45\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPythonMef">
+      <HintPath>..\Dicom\packages\IronPythonMef.1.0.0.0\lib\net40\IronPythonMef.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\Dicom\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dicom\packages\IronPython.2.7.4\lib\Net45\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dicom\packages\IronPython.2.7.4\lib\Net45\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dicom\packages\IronPython.2.7.4\lib\Net45\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -52,6 +75,33 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.resx</DependentUpon>
     </Compile>
+    <Compile Include="Statistics\AverageByteCountStatistics.cs" />
+    <Compile Include="Statistics\AverageCountStatistics.cs" />
+    <Compile Include="Statistics\AverageMessageCountStatistics.cs" />
+    <Compile Include="Statistics\AverageRateStatistics.cs" />
+    <Compile Include="Statistics\AverageStatistics.cs" />
+    <Compile Include="Statistics\AverageTimeSpanStatistics.cs" />
+    <Compile Include="Statistics\ByteCountFormatter.cs" />
+    <Compile Include="Statistics\ByteCountStatistics.cs" />
+    <Compile Include="Statistics\CollectionAverageStatistics.cs" />
+    <Compile Include="Statistics\CountStatistics.cs" />
+    <Compile Include="Statistics\IAverageStatistics.cs" />
+    <Compile Include="Statistics\IStatistics.cs" />
+    <Compile Include="Statistics\IStatisticsContext.cs" />
+    <Compile Include="Statistics\IStatisticsLoggerListener.cs" />
+    <Compile Include="Statistics\MessageRateFormatter.cs" />
+    <Compile Include="Statistics\MsgCountStatistics.cs" />
+    <Compile Include="Statistics\RateStatistics.cs" />
+    <Compile Include="Statistics\Statistics.cs" />
+    <Compile Include="Statistics\StatisticsContext.cs" />
+    <Compile Include="Statistics\StatisticsHelper.cs" />
+    <Compile Include="Statistics\StatisticsLogger.cs" />
+    <Compile Include="Statistics\StatisticsSet.cs" />
+    <Compile Include="Statistics\StatisticsSetCollection.cs" />
+    <Compile Include="Statistics\TimeSpanFormatter.cs" />
+    <Compile Include="Statistics\TimeSpanStatistics.cs" />
+    <Compile Include="Statistics\TimeSpanStatisticsHelper.cs" />
+    <Compile Include="Statistics\TransmissionRateFormatter.cs" />
     <Compile Include="Utilities\AttributeUtils.cs" />
     <Compile Include="Utilities\BackgroundTask.cs" />
     <Compile Include="Utilities\BlockingQueue.cs" />

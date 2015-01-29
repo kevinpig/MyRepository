@@ -62,11 +62,13 @@
       <DependentUpon>DicomSetting.settings</DependentUpon>
     </Compile>
     <Compile Include="ImageServerDicomService.cs" />
+    <Compile Include="MppsScp.cs" />
     <Compile Include="PacsStorageScu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerPartitionMonitor.cs" />
     <Compile Include="StoreScpExtension.cs" />
     <Compile Include="ThreadedService.cs" />
+    <Compile Include="WorklistScp.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

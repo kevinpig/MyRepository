@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DicomServer\AssociationVerifier.cs" />
     <Compile Include="DicomServer\DicomServer.cs" />
     <Compile Include="DicomServer\FindScpExtension.cs" />

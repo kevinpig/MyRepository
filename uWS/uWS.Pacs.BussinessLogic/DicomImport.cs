@@ -37,7 +37,6 @@ namespace uWS.Pacs.BussinessLogic
                     PatientName = dicomMessage.DataSet[DicomTags.PatientsName].GetString(0, string.Empty),
                     PatientBirthDate = dicomMessage.DataSet[DicomTags.PatientsBirthDate].GetString(0, string.Empty),
                     Issuer = dicomMessage.DataSet[DicomTags.IssuerOfPatientId].GetString(0, string.Empty),
-                    SpecificCharacterSet = dicomMessage.DataSet[DicomTags.SpecificCharacterSet].GetString(0, string.Empty);
                 };
 
             var study = new Study()
@@ -90,98 +89,10 @@ namespace uWS.Pacs.BussinessLogic
             }
 
             // Get Patient Db Object 
-            using (var context = new PacsContext())
-            {
-                Patient dbPatient = null;
-
-                var dbStudy = InsertStudy(context, study, patient, out dbPatient);
-
-                // Patient and study is exist in db now
-                var dbSeries = InsertSeries(context, series, dbStudy, dbPatient);
-
-                // insert instance 
-                InsertImage(context, instance, dbSeries, dbStudy, dbPatient);
-
-                context.SaveChanges();
-            }
+            
         }
 
-        #region Private method
-
-        private static Study InsertStudy(PacsContext context, Study study, Patient patient, out Patient dbPatient)
-        {
-            var dbStudy = context.Studies.FirstOrDefault(s => s.StudyUid.Equals(study.StudyUid));
-            if (dbStudy == null)
-            {
-                // check is patient exist by patient id, patient name and so on. 
-                var tempResult = (context.Patients.Where(p => p.PatientId.Equals(patient.PatientId))).ToList();
-
-                // TODO Patient strategy 
-                dbPatient = tempResult.FirstOrDefault();
-                if (dbPatient == null)
-                {
-                    patient.LastUpdateTime = DateTime.Now;
-                    patient.InsertTime = DateTime.Now;
-                    context.Patients.Add(patient);
-                    dbPatient = patient;
-                }
-
-                // Insert Study info 
-                dbStudy = study;
-                dbStudy.PatientForeignKey = patient.Id;
-                dbStudy.LastUpdateTime = DateTime.Now;
-                dbStudy.InsertTime = DateTime.Now;
-                context.Studies.Add(dbStudy);
-
-                dbPatient.NumberOfRelatedStudies += 1;
-            }
-            else
-            {
-                dbPatient = dbStudy.Patient;
-            }
-            return dbStudy;
-        }
-
-        private static Series InsertSeries(PacsContext context, Series series, Study dbStudy, Patient dbPatient)
-        {
-            var dbSeries = context.Series.FirstOrDefault(s => s.SeriesUid.Equals(series.SeriesUid));
-            if (dbSeries == null)
-            {
-                dbSeries = series;
-                dbSeries.StudyForeignKey = dbStudy.Id;
-                dbSeries.LastUpdateTime = DateTime.Now;
-                dbSeries.InsertTime = DateTime.Now;
-                context.Series.Add(dbSeries);
-
-                dbStudy.NumberOfRelatedSeries += 1;
-                dbPatient.NumberOfRelatedSeries += 1;
-            }
-            return dbSeries;
-        }
-
-        private static void InsertImage(PacsContext context, Instance instance, Series dbSeries, Study dbStudy,
-                                        Patient dbPatient)
-        {
-            var dbInstance = context.Instances.FirstOrDefault(i => i.SopInstanceUid.Equals(instance.SopInstanceUid));
-            if (dbInstance == null)
-            {
-                dbInstance = instance;
-                dbInstance.SeriesForeignKey = dbSeries.Id;
-                dbInstance.LastUpdateTime = DateTime.Now;
-                dbInstance.InsertTime = DateTime.Now;
-                context.Instances.Add(dbInstance);
-
-                dbSeries.NumberOfRelatedImage += 1;
-                dbStudy.NumberOfRelatedImage += 1;
-                dbPatient.NumberOfRelatedInstances += 1;
-            }
-            else
-            {
-                dbInstance.LastUpdateTime = DateTime.Now;
-            }
-        }
-        
-        #endregion
+       
         
     }
 }

@@ -14,7 +14,7 @@ using uWS.Dicom.Iod;
 namespace uWS.Dicom.Utilities.Anonymization
 {
 	/// <summary>
-	/// An enumeration of flags to control the behaviour of the <see cref="ValidationStrategy"/>.
+	/// An enumeration of flags to control the behaviour of the <see cref="DicomAnonymizer.ValidationStrategy"/>.
 	/// </summary>
 	[FlagsAttribute]
 	public enum ValidationOptions : uint
@@ -23,17 +23,17 @@ namespace uWS.Dicom.Utilities.Anonymization
 		#region Individual Flags - Study Level
 
 		/// <summary>
-		/// Indicates that the <see cref="ValidationStrategy"/> should not enforce a non-empty patient ID in the anonymized data set.
+		/// Indicates that the <see cref="DicomAnonymizer.ValidationStrategy"/> should not enforce a non-empty patient ID in the anonymized data set.
 		/// </summary>
 		AllowEmptyPatientId = 0x01,
 
 		/// <summary>
-		/// Indicates that the <see cref="ValidationStrategy"/> should not enforce a non-empty patient name in the anonymized data set.
+		/// Indicates that the <see cref="DicomAnonymizer.ValidationStrategy"/> should not enforce a non-empty patient name in the anonymized data set.
 		/// </summary>
 		AllowEmptyPatientName = 0x02,
 
 		/// <summary>
-		/// Indicates that the <see cref="ValidationStrategy"/> should not enforce a different patient's birthdate in the anonymized data set.
+		/// Indicates that the <see cref="DicomAnonymizer.ValidationStrategy"/> should not enforce a different patient's birthdate in the anonymized data set.
 		/// </summary>
 		AllowEqualBirthDate = 0x04,
 
@@ -42,12 +42,12 @@ namespace uWS.Dicom.Utilities.Anonymization
 		#region Group Flags
 
 		/// <summary>
-		/// Indicates that the <see cref="ValidationStrategy"/> should relax all optional attribute value checks in the anonymized data set.
+		/// Indicates that the <see cref="DicomAnonymizer.ValidationStrategy"/> should relax all optional attribute value checks in the anonymized data set.
 		/// </summary>
 		RelaxAllChecks = AllowEmptyPatientId | AllowEmptyPatientName | AllowEqualBirthDate,
 
 		/// <summary>
-		/// Indicates that the <see cref="ValidationStrategy"/>  should use its default behaviour, which is to enforce non-empty and different values in all checked attributes.
+		/// Indicates that the <see cref="DicomAnonymizer.ValidationStrategy"/>  should use its default behaviour, which is to enforce non-empty and different values in all checked attributes.
 		/// </summary>
 		Default = 0x0
 

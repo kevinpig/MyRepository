@@ -35,6 +35,12 @@ namespace uWs.PACS.Model
         public string StudyDescription { get; set; }
 
         #region Study-Patient 
+
+        public string PatientId { get; set; }
+
+        public string PatientName { get; set; }
+
+        public string PatientBirthday { get; set; }
         
         public string PatientAge { get; set; }
 

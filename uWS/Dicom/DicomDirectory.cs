@@ -117,6 +117,12 @@ namespace uWS.Dicom
 
         #region Public Properties
 
+        public string SaveFileName
+        {
+            get { return _saveFileName; }
+            set { _saveFileName = value; }
+        }
+
 		/// <summary>
 		/// An enumerable collection for traversing the <see cref="DirectoryRecordSequenceItem"/> records in the root of the DICOMDIR.
 		/// </summary>
@@ -238,10 +244,14 @@ namespace uWS.Dicom
         #endregion
 
         #region Public Methods
+        public void Save()
+        {
+            Save(_saveFileName);
+        }
+
         /// <summary>
         /// Saves the DICOMDIR to the specified file name.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
         public void Save(string fileName)
         {
             const DicomWriteOptions options = DicomWriteOptions.Default;
@@ -250,6 +260,7 @@ namespace uWS.Dicom
                 throw new InvalidOperationException("No Dicom Files added, cannot save dicom directory");
 
             _saveFileName = fileName;
+            
 
 			// Clear so that the calculations work properly on the length.
             _directoryRecordSequence.ClearSequenceItems();
@@ -672,6 +683,7 @@ namespace uWS.Dicom
         private static DirectoryRecordSequenceItem AddSequenceItem(DirectoryRecordType recordType, IDicomAttributeProvider dataSet, IDictionary<uint, object> tags)
         {
             DirectoryRecordSequenceItem dicomSequenceItem = new DirectoryRecordSequenceItem();
+            dicomSequenceItem.ValidateVrLengths = false;
             dicomSequenceItem[DicomTags.OffsetOfTheNextDirectoryRecord].Values = 0;
             dicomSequenceItem[DicomTags.RecordInUseFlag].Values = 0xFFFF;
             dicomSequenceItem[DicomTags.OffsetOfReferencedLowerLevelDirectoryEntity].Values = 0;

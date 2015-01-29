@@ -40,7 +40,7 @@ namespace uWS.Common
                 }
                 catch (Exception ex)
                 {
-                    Platform.Log(LogLevel.Warn, ex, string.Format("Loading {0) failed", file));
+                    Platform.Log(LogLevel.Warn, ex, string.Format("Loading {0} failed", file));
                 }
             }
         }

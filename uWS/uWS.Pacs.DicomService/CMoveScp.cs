@@ -81,15 +81,15 @@ namespace uWS.Pacs.DicomService
                 // load remote device for move information 
                 using (var ctx = new PacsContext())
                 {
-                    var device = (from d in ctx.Devices 
-                                 where d.ServerPartitionPK == Partition.Id && d.AeTitle == remoteAe 
-                                 select d).FirstOrDefault();
+                    var device = (from d in ctx.Devices
+                                  where d.ServerPartitionPK == Partition.Id && d.AeTitle == remoteAe
+                                  select d).FirstOrDefault();
 
                     if (device == null)
                     {
                         errorComment = string.Format(
-                                     "Unknown move destination \"{0}\", failing C-MOVE-RQ from {1} to {2}",
-                                     remoteAe, association.CallingAE, association.CalledAE);
+                            "Unknown move destination \"{0}\", failing C-MOVE-RQ from {1} to {2}",
+                            remoteAe, association.CallingAE, association.CalledAE);
                         Platform.Log(LogLevel.Error, errorComment);
                         server.SendCMoveResponse(presentationID, message.MessageId, new DicomMessage(),
                                                  DicomStatuses.QueryRetrieveMoveDestinationUnknown, errorComment);
@@ -101,19 +101,166 @@ namespace uWS.Pacs.DicomService
                     // use what is configured.  Always use the configured port. 
                     if (device.Dhcp)
                     {
-                        device.Hostname = association.RemoteEndPoint.Address.ToString();   
+                        device.Hostname = association.RemoteEndPoint.Address.ToString();
                     }
 
                     // now setup the storage scu component 
                     _theScu = new PacsStorageScu(Partition, device, association.CallingAE, message.MessageId);
+
+                    bool bOnline;
+
+                    if (level.Equals("PATIENT"))
+                    {
+                        bOnline = GetSopListForInstance(ctx, message, out errorComment);
+                    }
+                    else if (level.Equals("STUDY"))
+                    {
+                        bOnline = GetSopListForStudy(ctx, message, out errorComment);
+                    }
+                    else if (level.Equals("SERIES"))
+                    {
+                        bOnline = GetSopListForSeries(ctx, message, out errorComment);
+                    }
+                    else if (level.Equals("IMAGE"))
+                    {
+                        bOnline = GetSopListForInstance(ctx, message, out errorComment);
+                    }
+                    else
+                    {
+                        errorComment = string.Format("Unexpected Study Root Move Query/Retrieve level: {0}", level);
+                        Platform.Log(LogLevel.Error, errorComment);
+
+                        server.SendCMoveResponse(presentationID, message.MessageId, new DicomMessage(),
+                                                 DicomStatuses.QueryRetrieveIdentifierDoesNotMatchSOPClass,
+                                                 errorComment);
+                        finalResponseSent = true;
+                        return true;
+                    }
+
+                    // Could not find an online/readable location for the requested objects to move.
+                    // Note that if the C-MOVE-RQ included a list of study instance uids, and some 
+                    // were online and some offline, we don't fail now (ie, the check on the Count)
+                    if (!bOnline || _theScu.StorageInstanceList.Count == 0)
+                    {
+                        Platform.Log(LogLevel.Error, "Unable to find online storage location for C-MOVE-RQ: {0}",
+                                     errorComment);
+
+                        server.SendCMoveResponse(presentationID, message.MessageId, new DicomMessage(),
+                                                 DicomStatuses.QueryRetrieveUnableToPerformSuboperations,
+                                                 string.IsNullOrEmpty(errorComment) ? string.Empty : errorComment);
+                        finalResponseSent = true;
+                        _theScu.Dispose();
+                        _theScu = null;
+                        return true;
+                    }
+
+                    _theScu.ImageStoreCompleted += delegate(Object sender, StorageInstance instance)
+                        {
+                            var scu = (StorageScu) sender;
+                            var msg = new DicomMessage();
+                            DicomStatus status;
+
+                            if (instance.SendStatus.Status == DicomState.Failure)
+                            {
+                                errorComment =
+                                    string.IsNullOrEmpty(instance.ExtendedFailureDescription)
+                                        ? instance.SendStatus.ToString()
+                                        : instance.ExtendedFailureDescription;
+                            }
+
+                            if (scu.RemainingSubOperations == 0)
+                            {
+                                foreach (StorageInstance sop in _theScu.StorageInstanceList)
+                                {
+                                    if ((sop.SendStatus.Status != DicomState.Success)
+                                        && (sop.SendStatus.Status != DicomState.Warning))
+                                        msg.DataSet[DicomTags.FailedSopInstanceUidList].AppendString(sop.SopInstanceUid);
+                                }
+                                if (scu.Status == ScuOperationStatus.Canceled)
+                                    status = DicomStatuses.Cancel;
+                                else if (scu.Status == ScuOperationStatus.ConnectFailed)
+                                    status = DicomStatuses.QueryRetrieveMoveDestinationUnknown;
+                                else if (scu.FailureSubOperations > 0)
+                                    status = DicomStatuses.QueryRetrieveSubOpsOneOrMoreFailures;
+                                else if (!bOnline)
+                                    status = DicomStatuses.QueryRetrieveUnableToPerformSuboperations;
+                                else
+                                    status = DicomStatuses.Success;
+                            }
+                            else
+                            {
+                                status = DicomStatuses.Pending;
+
+                                if ((scu.RemainingSubOperations%5) != 0)
+                                    return;
+                                // Only send a RSP every 5 to reduce network load
+                            }
+                            server.SendCMoveResponse(presentationID, message.MessageId,
+                                                     msg, status,
+                                                     (ushort) scu.SuccessSubOperations,
+                                                     (ushort) scu.RemainingSubOperations,
+                                                     (ushort) scu.FailureSubOperations,
+                                                     (ushort) scu.WarningSubOperations,
+                                                     status == DicomStatuses.QueryRetrieveSubOpsOneOrMoreFailures
+                                                         ? errorComment
+                                                         : string.Empty);
+
+
+                            if (scu.RemainingSubOperations == 0)
+                                finalResponseSent = true;
+                        };
+
+                    _theScu.BeginSend(
+                        delegate(IAsyncResult ar)
+                            {
+                                if (_theScu != null)
+                                {
+                                    if (!finalResponseSent)
+                                    {
+                                        var msg = new DicomMessage();
+                                        server.SendCMoveResponse(presentationID, message.MessageId,
+                                                                 msg, DicomStatuses.QueryRetrieveSubOpsOneOrMoreFailures,
+                                                                 (ushort) _theScu.SuccessSubOperations,
+                                                                 0,
+                                                                 (ushort)
+                                                                 (_theScu.FailureSubOperations +
+                                                                  _theScu.RemainingSubOperations),
+                                                                 (ushort) _theScu.WarningSubOperations, errorComment);
+                                        finalResponseSent = true;
+                                    }
+
+                                    _theScu.EndSend(ar);
+                                    _theScu.Dispose();
+                                    _theScu = null;
+                                }
+                            },
+                        _theScu);
+
+                    return true;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Platform.Log(LogLevel.Error, e, "Unexpected exception when processing C-MOVE-RQ");
+                if (finalResponseSent == false)
+                {
+                    try
+                    {
+                        server.SendCMoveResponse(presentationID, message.MessageId, new DicomMessage(),
+                                                 DicomStatuses.QueryRetrieveUnableToProcess, e.Message);
+                        finalResponseSent = true;
+                    }
+                    catch (Exception x)
+                    {
+                        Platform.Log(LogLevel.Error, x,
+                                     "Unable to send final C-MOVE-RSP message on association from {0} to {1}",
+                                     association.CallingAE, association.CalledAE);
+                        server.Abort();
+                    }
+                }
             }
 
-            return true;
+            return false;
         }
 
         public override IList<SupportedSop> GetSupportedSopClasses()
@@ -149,10 +296,19 @@ namespace uWS.Pacs.DicomService
 
             foreach (var study in studyList)
             {
-                
+                var seriesPkList = (from s in ctx.Series where study.Id == s.StudyForeignKey select s.Id).ToList();
+
+                var sopList = (from s in ctx.Instances where seriesPkList.Contains(s.SeriesForeignKey) select s.Id).ToList();
+
+                var fileList = (from f in ctx.Files where sopList.Contains(f.InstanceFk) select f).ToList();
+
+                foreach (var file in fileList)
+                {
+                    _theScu.AddStorageInstance(new StorageInstance(file.FilePath));
+                }
             }
 
-            return false;
+            return true;
         }
 
         private bool GetSopListForStudy(PacsContext ctx, DicomMessage message, out string errorComment)
@@ -163,7 +319,21 @@ namespace uWS.Pacs.DicomService
 
             var studyList = (from s in ctx.Studies where studyUidList.Contains(s.StudyUid) select s).ToList();
 
-            return false;
+            foreach (var study in studyList)
+            {
+                var seriesPkList = (from s in ctx.Series where study.Id == s.StudyForeignKey select s.Id).ToList();
+
+                var sopList = (from s in ctx.Instances where seriesPkList.Contains(s.SeriesForeignKey) select s.Id).ToList();
+
+                var fileList = (from f in ctx.Files where sopList.Contains(f.InstanceFk) select f).ToList();
+
+                foreach (var file in fileList)
+                {
+                    _theScu.AddStorageInstance(new StorageInstance(file.FilePath));
+                }
+            }
+
+            return true;
         }
 
         private bool GetSopListForSeries(PacsContext ctx, DicomMessage message, out string errorComment)
@@ -177,11 +347,16 @@ namespace uWS.Pacs.DicomService
 
             var seriesPkList = (from s in ctx.Series where seriesUidList.Contains(s.SeriesUid) select s.Id).ToList();
 
-            var sopList = (from s in ctx.Instances where seriesPkList.Contains(s.Id) select s.Id).ToList();
+            var sopList = (from s in ctx.Instances where seriesPkList.Contains(s.SeriesForeignKey) select s.Id).ToList();
 
-            var fileList = (from f in ctx)
+            var fileList = (from f in ctx.Files where sopList.Contains(f.InstanceFk) select f).ToList();
 
-            return false;
+            foreach (var file in fileList)
+            {
+                _theScu.AddStorageInstance(new StorageInstance(file.FilePath));
+            }
+
+            return true;
         }
 
         private bool GetSopListForInstance(PacsContext ctx, DicomMessage message, out string errorComment)

@@ -18,14 +18,20 @@ namespace uWs.PACS.Model
 
         public string DirPath { get; set; }
 
-        public int NextFileSytemFK { get; set; }
+        // public int NextFileSytemFK { get; set; }
+
+        public int LowWatermark { get; set; }
+
+        public int HighWatermark { get; set; }
 
         public string Description { get; set; }
 
         public virtual ICollection<File> Files { get; set; }
 
-        public virtual FileSystem NextFileSystem { get; set; }
+        public virtual ICollection<ServerPartition> ServerPartitions { get; set; } 
 
-        public virtual ICollection<FileSystem> PriviouseFileSystems { get; set; } 
+        //public virtual FileSystem NextFileSystem { get; set; }
+
+        //public virtual ICollection<FileSystem> PriviouseFileSystems { get; set; } 
     }
 }

@@ -10,8 +10,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
-using System.Text;
-using log4net;
+﻿using System.Linq;
+﻿using System.Text;
+﻿using IronPython.Hosting;
+﻿using IronPythonMef;
+﻿using Microsoft.Scripting.Hosting;
+﻿using log4net;
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "Logging.config", Watch = true)]
 
@@ -52,6 +56,7 @@ namespace uWS.Common
     {
         #region Filed & Const string
 
+        private const string ScriptSubFolder = "Script";
         private const string PluginSubFolder = "Plugins";
         private const string LogSubFolder = "log";
 
@@ -62,6 +67,7 @@ namespace uWS.Common
         private static readonly object SyncRoot = new object();
         private static volatile string _installDirectory;
         private static volatile string _pluginsDirectory;
+        private static volatile string _scriptDirectory;
         private static volatile string _logDirectory;
 
         public static CompositionContainer CompositionContainer = null;
@@ -119,6 +125,33 @@ namespace uWS.Common
             set
             {
                 _pluginsDirectory = value;
+            }
+        }
+
+        public static string ScriptDirectory
+        {
+            get
+            {
+                if (_scriptDirectory == null)
+                {
+                    lock (SyncRoot)
+                    {
+                        if (_scriptDirectory == null)
+                        {
+                            string scriptDirectoy =
+                                Path.Combine(WorkingDirectory, ScriptSubFolder);
+
+                            _scriptDirectory = Directory.Exists(scriptDirectoy) ? scriptDirectoy : WorkingDirectory;
+                        }
+                    }
+                }
+
+                return _scriptDirectory;
+            }
+
+            set
+            {
+                _scriptDirectory = value;
             }
         }
 
@@ -188,6 +221,24 @@ namespace uWS.Common
 
             CompositionContainer = new CompositionContainer(catalog);
         }
+
+        //public static void LoadIronPythonEngine()
+        //{
+        //    var engine = Python.CreateEngine();
+
+        //    IEnumerable<string> files = Directory.EnumerateFiles(ScriptDirectory, "*.py", SearchOption.AllDirectories);
+
+        //    foreach (var file in files)
+        //    {
+        //        string scriptText = File.ReadAllText(file);
+
+        //        ScriptSource script = engine.CreateScriptSourceFromString(scriptText);
+
+        //        var typeExtractor = new ExtractTypesFromScript(engine);
+        //        var exports = typeExtractor.GetPartsFromScript(script, typesToImport).ToList();
+        //    }
+
+        //}
 
         #region Log Method
 
@@ -514,7 +565,7 @@ namespace uWS.Common
         /// method depends on failed casts resulting in <b>null</b>.</para>
         /// <para>This method has been deprecated since it does not actually perform any
         /// cast checking itself and entirely relies on correct usage (which is not apparent
-        /// through the Visual Studio Intellisence feature) to function as an exception message
+        /// through the Visual Studio Intelligence feature) to function as an exception message
         /// formatter. The recommended practice is to use the <see cref="CheckExpectedType"/>
         /// if the cast output need not be consumed, or use the direct cast operator instead.</para>
         /// </remarks>

@@ -23,6 +23,9 @@ namespace uWs.PACS.Model.Mapping
              ToTable("ServerPartition");
 
              // relationship
-        }
+             this.HasRequired(t => t.FileSystem)
+                 .WithMany(t => t.ServerPartitions)
+                 .HasForeignKey(t => t.FileSystemFk);
+         }
     }
 }
